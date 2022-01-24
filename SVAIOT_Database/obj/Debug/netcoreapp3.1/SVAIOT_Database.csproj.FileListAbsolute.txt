@@ -1,0 +1,13 @@
+E:\github\WebSocketServer\SVAIOT_Database\bin\Debug\netcoreapp3.1\SVAIOT_Database.deps.json
+E:\github\WebSocketServer\SVAIOT_Database\bin\Debug\netcoreapp3.1\SVAIOT_Database.runtimeconfig.json
+E:\github\WebSocketServer\SVAIOT_Database\bin\Debug\netcoreapp3.1\SVAIOT_Database.runtimeconfig.dev.json
+E:\github\WebSocketServer\SVAIOT_Database\bin\Debug\netcoreapp3.1\SVAIOT_Database.dll
+E:\github\WebSocketServer\SVAIOT_Database\bin\Debug\netcoreapp3.1\SVAIOT_Database.pdb
+E:\github\WebSocketServer\SVAIOT_Database\obj\Debug\netcoreapp3.1\SVAIOT_Database.csproj.AssemblyReference.cache
+E:\github\WebSocketServer\SVAIOT_Database\obj\Debug\netcoreapp3.1\SVAIOT_Database.GeneratedMSBuildEditorConfig.editorconfig
+E:\github\WebSocketServer\SVAIOT_Database\obj\Debug\netcoreapp3.1\SVAIOT_Database.AssemblyInfoInputs.cache
+E:\github\WebSocketServer\SVAIOT_Database\obj\Debug\netcoreapp3.1\SVAIOT_Database.AssemblyInfo.cs
+E:\github\WebSocketServer\SVAIOT_Database\obj\Debug\netcoreapp3.1\SVAIOT_Database.csproj.CoreCompileInputs.cache
+E:\github\WebSocketServer\SVAIOT_Database\obj\Debug\netcoreapp3.1\SVAIOT_Database.dll
+E:\github\WebSocketServer\SVAIOT_Database\obj\Debug\netcoreapp3.1\SVAIOT_Database.pdb
+E:\github\WebSocketServer\SVAIOT_Database\obj\Debug\netcoreapp3.1\SVAIOT_Database.genruntimeconfig.cache

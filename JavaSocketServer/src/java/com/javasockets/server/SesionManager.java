@@ -1,6 +1,7 @@
 package com.javasockets.server;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.websocket.Session;
 
@@ -55,10 +56,11 @@ public class SesionManager {
     }
 
     public void sendBroadcast(String msg, String from) {
-        mSessions.values().stream().forEach((Session to) -> {
+        List<Session> list = mSessions.values().stream().toList();
+        for (Session to : list) {
             if (!to.getId().equals(from)) {
                 sendTo(msg, to);
             }
-        });
+        }
     }
 }

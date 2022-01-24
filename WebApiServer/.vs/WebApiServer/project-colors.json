@@ -1,0 +1,26 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "f8b3a4d3-e6d8-426d-afa7-40b6ab1a18f6": {
+      "ProjectGuid": "f8b3a4d3-e6d8-426d-afa7-40b6ab1a18f6",
+      "DisplayName": "WebApiServer",
+      "ColorIndex": 0
+    },
+    "a7d5e50f-e62a-404a-b386-8e46fa0f0116": {
+      "ProjectGuid": "a7d5e50f-e62a-404a-b386-8e46fa0f0116",
+      "DisplayName": "SVAIOT_Database",
+      "ColorIndex": 1
+    },
+    "49ea238f-1fcd-4d15-b45c-4822369c78ac": {
+      "ProjectGuid": "49ea238f-1fcd-4d15-b45c-4822369c78ac",
+      "DisplayName": "SVAIOT_Database",
+      "ColorIndex": 2
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Archivos varios",
+      "ColorIndex": -1
+    }
+  },
+  "NextColorIndex": 3
+}

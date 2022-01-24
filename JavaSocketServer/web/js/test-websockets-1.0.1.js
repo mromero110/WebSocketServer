@@ -1,4 +1,4 @@
-var host = 'ws://localhost:8080/JavaSocketServer/wsServer';
+var host = 'ws://216.231.128.40:10669/JavaSocketServer/wsServer';
 
 function show(message) {
     $("#messages").html(message);
