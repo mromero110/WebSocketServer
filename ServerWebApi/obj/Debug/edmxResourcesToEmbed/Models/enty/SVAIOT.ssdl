@@ -1,0 +1,265 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SvaiotModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="dispositivo">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="id_usuario" Type="int" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="placa" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="descripcion" Type="varchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <EntityType Name="dispositivo_configuracion">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="id_dispositivo" Type="int" Nullable="false" />
+    <Property Name="zonawifi" Type="bit" Nullable="false" />
+    <Property Name="apagado_emergencia" Type="bit" Nullable="false" />
+    <Property Name="alarma" Type="bit" Nullable="false" />
+    <Property Name="camara" Type="bit" Nullable="false" />
+    <Property Name="genera" Type="datetime2" Precision="0" Nullable="false" />
+  </EntityType>
+  <EntityType Name="dispositivo_historico">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="id_dispositivo" Type="int" Nullable="false" />
+    <Property Name="zonawifi" Type="bit" Nullable="false" />
+    <Property Name="apagado_emergencia" Type="bit" Nullable="false" />
+    <Property Name="alarma" Type="bit" Nullable="false" />
+    <Property Name="camara" Type="bit" Nullable="false" />
+    <Property Name="genera" Type="datetime2" Precision="0" Nullable="false" />
+  </EntityType>
+  <EntityType Name="dispositivo_zonasegura">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="id_dispositivo" Type="int" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="latitud" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="longitud" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="presicion" Type="float" Nullable="false" />
+    <Property Name="rango" Type="int" Nullable="false" />
+    <Property Name="estado" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="dispositivo_zonawifi">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="id_dispositivo" Type="int" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="es_fisico" Type="bit" Nullable="false" />
+    <Property Name="serial" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="estado" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="gps">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="id_dispositivo" Type="int" Nullable="false" />
+    <Property Name="latitud" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="longitud" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="prescicion" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="genera" Type="datetime2" Precision="0" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="usuario">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="apellido" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="documento" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="telefono" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="correo" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="genera" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+    <Property Name="activo" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="usuario_credenciales">
+    <Key>
+      <PropertyRef Name="id_usuario" />
+    </Key>
+    <Property Name="id_usuario" Type="int" Nullable="false" />
+    <Property Name="cryp_username" Type="varchar" MaxLength="300" Nullable="false" />
+    <Property Name="cryp_password" Type="varchar" MaxLength="300" Nullable="false" />
+    <Property Name="serial_dispositivo" Type="varchar" MaxLength="300" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_dispositivo_configuracion_dispositivos">
+    <End Role="dispositivo" Type="Self.dispositivo" Multiplicity="1" />
+    <End Role="dispositivo_configuracion" Type="Self.dispositivo_configuracion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="dispositivo">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="dispositivo_configuracion">
+        <PropertyRef Name="id_dispositivo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dispositivo_historico_dispositivos">
+    <End Role="dispositivo" Type="Self.dispositivo" Multiplicity="1" />
+    <End Role="dispositivo_historico" Type="Self.dispositivo_historico" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="dispositivo">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="dispositivo_historico">
+        <PropertyRef Name="id_dispositivo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dispositivo_zonasegura_dispositivos">
+    <End Role="dispositivo" Type="Self.dispositivo" Multiplicity="1" />
+    <End Role="dispositivo_zonasegura" Type="Self.dispositivo_zonasegura" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="dispositivo">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="dispositivo_zonasegura">
+        <PropertyRef Name="id_dispositivo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dispositivo_zonawifi_dispositivos">
+    <End Role="dispositivo" Type="Self.dispositivo" Multiplicity="1" />
+    <End Role="dispositivo_zonawifi" Type="Self.dispositivo_zonawifi" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="dispositivo">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="dispositivo_zonawifi">
+        <PropertyRef Name="id_dispositivo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dispositivos_usuarios">
+    <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+    <End Role="dispositivo" Type="Self.dispositivo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="usuario">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="dispositivo">
+        <PropertyRef Name="id_usuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_gps_dispositivos">
+    <End Role="dispositivo" Type="Self.dispositivo" Multiplicity="1" />
+    <End Role="gps" Type="Self.gps" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="dispositivo">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="gps">
+        <PropertyRef Name="id_dispositivo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_usuario_credenciales_usuarios">
+    <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+    <End Role="usuario_credenciales" Type="Self.usuario_credenciales" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="usuario">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="usuario_credenciales">
+        <PropertyRef Name="id_usuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="add_device_configuration" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id_dispositivo" Type="int" Mode="In" />
+    <Parameter Name="zona_wifi" Type="bit" Mode="In" />
+    <Parameter Name="apagado_emergencia" Type="bit" Mode="In" />
+    <Parameter Name="alarma" Type="bit" Mode="In" />
+    <Parameter Name="camara" Type="bit" Mode="In" />
+  </Function>
+  <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+  <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <EntityContainer Name="SvaiotModelStoreContainer">
+    <EntitySet Name="dispositivo" EntityType="Self.dispositivo" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="dispositivo_configuracion" EntityType="Self.dispositivo_configuracion" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="dispositivo_historico" EntityType="Self.dispositivo_historico" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="dispositivo_zonasegura" EntityType="Self.dispositivo_zonasegura" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="dispositivo_zonawifi" EntityType="Self.dispositivo_zonawifi" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="gps" EntityType="Self.gps" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="usuario" EntityType="Self.usuario" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="usuario_credenciales" EntityType="Self.usuario_credenciales" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_dispositivo_configuracion_dispositivos" Association="Self.FK_dispositivo_configuracion_dispositivos">
+      <End Role="dispositivo" EntitySet="dispositivo" />
+      <End Role="dispositivo_configuracion" EntitySet="dispositivo_configuracion" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dispositivo_historico_dispositivos" Association="Self.FK_dispositivo_historico_dispositivos">
+      <End Role="dispositivo" EntitySet="dispositivo" />
+      <End Role="dispositivo_historico" EntitySet="dispositivo_historico" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dispositivo_zonasegura_dispositivos" Association="Self.FK_dispositivo_zonasegura_dispositivos">
+      <End Role="dispositivo" EntitySet="dispositivo" />
+      <End Role="dispositivo_zonasegura" EntitySet="dispositivo_zonasegura" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dispositivo_zonawifi_dispositivos" Association="Self.FK_dispositivo_zonawifi_dispositivos">
+      <End Role="dispositivo" EntitySet="dispositivo" />
+      <End Role="dispositivo_zonawifi" EntitySet="dispositivo_zonawifi" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dispositivos_usuarios" Association="Self.FK_dispositivos_usuarios">
+      <End Role="usuario" EntitySet="usuario" />
+      <End Role="dispositivo" EntitySet="dispositivo" />
+    </AssociationSet>
+    <AssociationSet Name="FK_gps_dispositivos" Association="Self.FK_gps_dispositivos">
+      <End Role="dispositivo" EntitySet="dispositivo" />
+      <End Role="gps" EntitySet="gps" />
+    </AssociationSet>
+    <AssociationSet Name="FK_usuario_credenciales_usuarios" Association="Self.FK_usuario_credenciales_usuarios">
+      <End Role="usuario" EntitySet="usuario" />
+      <End Role="usuario_credenciales" EntitySet="usuario_credenciales" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
