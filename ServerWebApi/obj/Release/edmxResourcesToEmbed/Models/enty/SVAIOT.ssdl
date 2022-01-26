@@ -6,6 +6,7 @@
     </Key>
     <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="id_usuario" Type="int" Nullable="false" />
+    <Property Name="id_serial" Type="int" Nullable="false" />
     <Property Name="nombre" Type="varchar" MaxLength="100" Nullable="false" />
     <Property Name="placa" Type="varchar" MaxLength="100" Nullable="false" />
     <Property Name="descripcion" Type="varchar" MaxLength="100" Nullable="false" />
@@ -33,6 +34,14 @@
     <Property Name="alarma" Type="bit" Nullable="false" />
     <Property Name="camara" Type="bit" Nullable="false" />
     <Property Name="genera" Type="datetime2" Precision="0" Nullable="false" />
+  </EntityType>
+  <EntityType Name="dispositivo_serial">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="serial_device" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="tipo" Type="varchar" MaxLength="20" Nullable="false" />
   </EntityType>
   <EntityType Name="dispositivo_zonasegura">
     <Key>
@@ -110,6 +119,18 @@
       </Principal>
       <Dependent Role="dispositivo_configuracion">
         <PropertyRef Name="id_dispositivo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dispositivo_dispositivo_serial">
+    <End Role="dispositivo_serial" Type="Self.dispositivo_serial" Multiplicity="1" />
+    <End Role="dispositivo" Type="Self.dispositivo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="dispositivo_serial">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="dispositivo">
+        <PropertyRef Name="id_serial" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -227,6 +248,7 @@
     <EntitySet Name="dispositivo" EntityType="Self.dispositivo" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="dispositivo_configuracion" EntityType="Self.dispositivo_configuracion" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="dispositivo_historico" EntityType="Self.dispositivo_historico" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="dispositivo_serial" EntityType="Self.dispositivo_serial" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="dispositivo_zonasegura" EntityType="Self.dispositivo_zonasegura" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="dispositivo_zonawifi" EntityType="Self.dispositivo_zonawifi" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="gps" EntityType="Self.gps" Schema="dbo" store:Type="Tables" />
@@ -236,6 +258,10 @@
     <AssociationSet Name="FK_dispositivo_configuracion_dispositivos" Association="Self.FK_dispositivo_configuracion_dispositivos">
       <End Role="dispositivo" EntitySet="dispositivo" />
       <End Role="dispositivo_configuracion" EntitySet="dispositivo_configuracion" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dispositivo_dispositivo_serial" Association="Self.FK_dispositivo_dispositivo_serial">
+      <End Role="dispositivo_serial" EntitySet="dispositivo_serial" />
+      <End Role="dispositivo" EntitySet="dispositivo" />
     </AssociationSet>
     <AssociationSet Name="FK_dispositivo_historico_dispositivos" Association="Self.FK_dispositivo_historico_dispositivos">
       <End Role="dispositivo" EntitySet="dispositivo" />

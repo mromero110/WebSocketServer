@@ -27,5 +27,24 @@ namespace ServerWebApi.Models.services
                      .FirstOrDefault();
             }
         }
+
+        public DeviceUserResponse GetUserBySerialDevice(string serial)
+        {
+            using (var context = new SvaiotEntities())
+            {
+                return (from devserial in context.dispositivo_serial
+                        join disp in context.dispositivo on devserial.id equals disp.id_serial
+                        join cred in context.usuario_credenciales on disp.id_usuario equals cred.id_usuario
+                        where devserial.serial_device == serial
+                        select new DeviceUserResponse() { 
+                            Code = disp.id,
+                            User = new UserResponse()
+                            {
+                                Id = cred.id_usuario,
+                                Nombre = cred.usuario.nombre
+                            }
+                        }).FirstOrDefault();
+            }
+        }
     }
 }

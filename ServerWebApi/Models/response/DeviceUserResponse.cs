@@ -5,9 +5,9 @@ using System.Web;
 
 namespace ServerWebApi.Models.response
 {
-    public class TokenResponse
+    public class DeviceUserResponse
     {
-        public string Token { get; set; }
         public int Code { get; set; }
+        public UserResponse User { get; set; }
     }
 }

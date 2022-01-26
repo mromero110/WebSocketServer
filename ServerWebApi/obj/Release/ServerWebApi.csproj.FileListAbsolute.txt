@@ -94,3 +94,4 @@ C:\github\WebSocketServer\ServerWebApi\obj\Release\ServerWebApi.csproj.CoreCompi
 C:\github\WebSocketServer\ServerWebApi\obj\Release\ServerWebApi.csproj.CopyComplete
 C:\github\WebSocketServer\ServerWebApi\obj\Release\ServerWebApi.dll
 C:\github\WebSocketServer\ServerWebApi\obj\Release\ServerWebApi.pdb
+C:\github\WebSocketServer\ServerWebApi\obj\Release\ServerWebApi.csproj.AssemblyReference.cache

@@ -192,6 +192,9 @@
     <Compile Include="Models\enty\dispositivo_historico.cs">
       <DependentUpon>SVAIOT.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\enty\dispositivo_serial.cs">
+      <DependentUpon>SVAIOT.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\enty\dispositivo_zonasegura.cs">
       <DependentUpon>SVAIOT.tt</DependentUpon>
     </Compile>
@@ -232,6 +235,7 @@
     <Compile Include="Models\request\DeviceRequest.cs" />
     <Compile Include="Models\request\SecureZoneRequest.cs" />
     <Compile Include="Models\request\WifiZoneRequest.cs" />
+    <Compile Include="Models\response\DeviceUserResponse.cs" />
     <Compile Include="Models\response\GpsResponse.cs" />
     <Compile Include="Models\request\GpsRequest.cs" />
     <Compile Include="Models\response\MessageResponse.cs" />

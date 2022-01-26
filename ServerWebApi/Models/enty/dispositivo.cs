@@ -26,12 +26,14 @@ namespace ServerWebApi.Models.enty
     
         public int id { get; set; }
         public int id_usuario { get; set; }
+        public int id_serial { get; set; }
         public string nombre { get; set; }
         public string placa { get; set; }
         public string descripcion { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<dispositivo_configuracion> dispositivo_configuracion { get; set; }
+        public virtual dispositivo_serial dispositivo_serial { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<dispositivo_historico> dispositivo_historico { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
