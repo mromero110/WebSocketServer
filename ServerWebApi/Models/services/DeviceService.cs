@@ -10,19 +10,19 @@ namespace ServerWebApi.Models.services
 {
     public class DeviceService
     {
-        public MessageResponse PostDevice(DeviceRequest device, int usuario)
+        public void PostDevice(DeviceRequest device, int usuario)
         {
             using (var context = new SvaiotEntities()) {
                 var dispositivo = new dispositivo()
                 {
                     id_usuario = usuario,
+                    id_serial = device.idSerial,
                     descripcion = device.Descripcion,
                     nombre = device.Nombre,
                     placa  = device.Placa,
                 };
                 context.dispositivo.Add(dispositivo);
                 context.SaveChanges();
-                return MessageResponse.Ok();
             }
         }
 
@@ -39,6 +39,22 @@ namespace ServerWebApi.Models.services
                 else {
                     return MessageResponse.Bad("El dispositivo no se encuentra asignado");
                 }
+            }
+        }
+
+        public ConfigRequest GetConfiguracion(int device, string serial)
+        {
+            using (var context = new SvaiotEntities())
+            {
+               return (from config in context.dispositivo_configuracion
+                 where config.dispositivo.id == device && config.dispositivo.dispositivo_serial.serial_device == serial
+                 select new ConfigRequest()
+                 {
+                     Alarma = config.alarma,
+                     ApagadoEmergencia = config.apagado_emergencia,
+                     Camara = config.camara,
+                     ZonaWifi = config.zonawifi
+                 }).FirstOrDefault();
             }
         }
     }

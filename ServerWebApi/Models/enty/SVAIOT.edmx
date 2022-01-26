@@ -4,13 +4,14 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="SvaiotModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="SvaiotModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="dispositivo">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="id_usuario" Type="int" Nullable="false" />
+          <Property Name="id_serial" Type="int" Nullable="false" />
           <Property Name="nombre" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="placa" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="descripcion" Type="varchar" MaxLength="100" Nullable="false" />
@@ -38,6 +39,14 @@
           <Property Name="alarma" Type="bit" Nullable="false" />
           <Property Name="camara" Type="bit" Nullable="false" />
           <Property Name="genera" Type="datetime2" Precision="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="dispositivo_serial">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="serial_device" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="tipo" Type="varchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityType Name="dispositivo_zonasegura">
           <Key>
@@ -115,6 +124,18 @@
             </Principal>
             <Dependent Role="dispositivo_configuracion">
               <PropertyRef Name="id_dispositivo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dispositivo_dispositivo_serial">
+          <End Role="dispositivo_serial" Type="Self.dispositivo_serial" Multiplicity="1" />
+          <End Role="dispositivo" Type="Self.dispositivo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="dispositivo_serial">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="dispositivo">
+              <PropertyRef Name="id_serial" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -232,6 +253,7 @@
           <EntitySet Name="dispositivo" EntityType="Self.dispositivo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="dispositivo_configuracion" EntityType="Self.dispositivo_configuracion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="dispositivo_historico" EntityType="Self.dispositivo_historico" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="dispositivo_serial" EntityType="Self.dispositivo_serial" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="dispositivo_zonasegura" EntityType="Self.dispositivo_zonasegura" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="dispositivo_zonawifi" EntityType="Self.dispositivo_zonawifi" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="gps" EntityType="Self.gps" Schema="dbo" store:Type="Tables" />
@@ -241,6 +263,10 @@
           <AssociationSet Name="FK_dispositivo_configuracion_dispositivos" Association="Self.FK_dispositivo_configuracion_dispositivos">
             <End Role="dispositivo" EntitySet="dispositivo" />
             <End Role="dispositivo_configuracion" EntitySet="dispositivo_configuracion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dispositivo_dispositivo_serial" Association="Self.FK_dispositivo_dispositivo_serial">
+            <End Role="dispositivo_serial" EntitySet="dispositivo_serial" />
+            <End Role="dispositivo" EntitySet="dispositivo" />
           </AssociationSet>
           <AssociationSet Name="FK_dispositivo_historico_dispositivos" Association="Self.FK_dispositivo_historico_dispositivos">
             <End Role="dispositivo" EntitySet="dispositivo" />
@@ -267,27 +293,10 @@
             <End Role="usuario_credenciales" EntitySet="usuario_credenciales" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SvaiotModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="dispositivo">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="id_usuario" Type="Int32" Nullable="false" />
-          <Property Name="nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="placa" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="dispositivo_configuracion" Relationship="Self.FK_dispositivo_configuracion_dispositivos" FromRole="dispositivo" ToRole="dispositivo_configuracion" />
-          <NavigationProperty Name="dispositivo_historico" Relationship="Self.FK_dispositivo_historico_dispositivos" FromRole="dispositivo" ToRole="dispositivo_historico" />
-          <NavigationProperty Name="dispositivo_zonasegura" Relationship="Self.FK_dispositivo_zonasegura_dispositivos" FromRole="dispositivo" ToRole="dispositivo_zonasegura" />
-          <NavigationProperty Name="dispositivo_zonawifi" Relationship="Self.FK_dispositivo_zonawifi_dispositivos" FromRole="dispositivo" ToRole="dispositivo_zonawifi" />
-          <NavigationProperty Name="usuario" Relationship="Self.FK_dispositivos_usuarios" FromRole="dispositivo" ToRole="usuario" />
-          <NavigationProperty Name="gps" Relationship="Self.FK_gps_dispositivos" FromRole="dispositivo" ToRole="gps" />
-        </EntityType>
         <EntityType Name="dispositivo_configuracion">
           <Key>
             <PropertyRef Name="id" />
@@ -299,7 +308,7 @@
           <Property Name="alarma" Type="Boolean" Nullable="false" />
           <Property Name="camara" Type="Boolean" Nullable="false" />
           <Property Name="genera" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="dispositivo" Relationship="Self.FK_dispositivo_configuracion_dispositivos" FromRole="dispositivo_configuracion" ToRole="dispositivo" />
+          <NavigationProperty Name="dispositivo" Relationship="SvaiotModel.FK_dispositivo_configuracion_dispositivos" FromRole="dispositivo_configuracion" ToRole="dispositivo" />
         </EntityType>
         <EntityType Name="dispositivo_historico">
           <Key>
@@ -312,45 +321,7 @@
           <Property Name="alarma" Type="Boolean" Nullable="false" />
           <Property Name="camara" Type="Boolean" Nullable="false" />
           <Property Name="genera" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="dispositivo" Relationship="Self.FK_dispositivo_historico_dispositivos" FromRole="dispositivo_historico" ToRole="dispositivo" />
-        </EntityType>
-        <EntityType Name="dispositivo_zonasegura">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="id_dispositivo" Type="Int32" Nullable="false" />
-          <Property Name="nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="latitud" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="longitud" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="presicion" Type="Double" Nullable="false" />
-          <Property Name="rango" Type="Int32" Nullable="false" />
-          <Property Name="estado" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="dispositivo" Relationship="Self.FK_dispositivo_zonasegura_dispositivos" FromRole="dispositivo_zonasegura" ToRole="dispositivo" />
-        </EntityType>
-        <EntityType Name="dispositivo_zonawifi">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="id_dispositivo" Type="Int32" Nullable="false" />
-          <Property Name="nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="es_fisico" Type="Boolean" Nullable="false" />
-          <Property Name="serial" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="estado" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="dispositivo" Relationship="Self.FK_dispositivo_zonawifi_dispositivos" FromRole="dispositivo_zonawifi" ToRole="dispositivo" />
-        </EntityType>
-        <EntityType Name="gps">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="id_dispositivo" Type="Int32" Nullable="false" />
-          <Property Name="latitud" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="longitud" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="prescicion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="genera" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="dispositivo" Relationship="Self.FK_gps_dispositivos" FromRole="gps" ToRole="dispositivo" />
+          <NavigationProperty Name="dispositivo" Relationship="SvaiotModel.FK_dispositivo_historico_dispositivos" FromRole="dispositivo_historico" ToRole="dispositivo" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -362,153 +333,10 @@
           <Property Name="version" Type="Int32" />
           <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
-        <EntityType Name="usuario">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="apellido" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="documento" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="telefono" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="correo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="genera" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
-          <Property Name="activo" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="dispositivo" Relationship="Self.FK_dispositivos_usuarios" FromRole="usuario" ToRole="dispositivo" />
-          <NavigationProperty Name="usuario_credenciales" Relationship="Self.FK_usuario_credenciales_usuarios" FromRole="usuario" ToRole="usuario_credenciales" />
-        </EntityType>
-        <EntityType Name="usuario_credenciales">
-          <Key>
-            <PropertyRef Name="id_usuario" />
-          </Key>
-          <Property Name="id_usuario" Type="Int32" Nullable="false" />
-          <Property Name="cryp_username" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="cryp_password" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="serial_dispositivo" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="usuario" Relationship="Self.FK_usuario_credenciales_usuarios" FromRole="usuario_credenciales" ToRole="usuario" />
-        </EntityType>
-        <Association Name="FK_dispositivo_configuracion_dispositivos">
-          <End Role="dispositivo" Type="Self.dispositivo" Multiplicity="1" />
-          <End Role="dispositivo_configuracion" Type="Self.dispositivo_configuracion" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="dispositivo">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="dispositivo_configuracion">
-              <PropertyRef Name="id_dispositivo" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dispositivo_historico_dispositivos">
-          <End Role="dispositivo" Type="Self.dispositivo" Multiplicity="1" />
-          <End Role="dispositivo_historico" Type="Self.dispositivo_historico" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="dispositivo">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="dispositivo_historico">
-              <PropertyRef Name="id_dispositivo" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dispositivo_zonasegura_dispositivos">
-          <End Role="dispositivo" Type="Self.dispositivo" Multiplicity="1" />
-          <End Role="dispositivo_zonasegura" Type="Self.dispositivo_zonasegura" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="dispositivo">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="dispositivo_zonasegura">
-              <PropertyRef Name="id_dispositivo" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dispositivo_zonawifi_dispositivos">
-          <End Role="dispositivo" Type="Self.dispositivo" Multiplicity="1" />
-          <End Role="dispositivo_zonawifi" Type="Self.dispositivo_zonawifi" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="dispositivo">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="dispositivo_zonawifi">
-              <PropertyRef Name="id_dispositivo" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dispositivos_usuarios">
-          <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
-          <End Role="dispositivo" Type="Self.dispositivo" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="usuario">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="dispositivo">
-              <PropertyRef Name="id_usuario" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_gps_dispositivos">
-          <End Role="dispositivo" Type="Self.dispositivo" Multiplicity="1" />
-          <End Role="gps" Type="Self.gps" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="dispositivo">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="gps">
-              <PropertyRef Name="id_dispositivo" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_usuario_credenciales_usuarios">
-          <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
-          <End Role="usuario_credenciales" Type="Self.usuario_credenciales" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="usuario">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="usuario_credenciales">
-              <PropertyRef Name="id_usuario" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="SvaiotEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="dispositivo" EntityType="Self.dispositivo" />
           <EntitySet Name="dispositivo_configuracion" EntityType="Self.dispositivo_configuracion" />
           <EntitySet Name="dispositivo_historico" EntityType="Self.dispositivo_historico" />
-          <EntitySet Name="dispositivo_zonasegura" EntityType="Self.dispositivo_zonasegura" />
-          <EntitySet Name="dispositivo_zonawifi" EntityType="Self.dispositivo_zonawifi" />
-          <EntitySet Name="gps" EntityType="Self.gps" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
-          <EntitySet Name="usuario" EntityType="Self.usuario" />
-          <EntitySet Name="usuario_credenciales" EntityType="Self.usuario_credenciales" />
-          <AssociationSet Name="FK_dispositivo_configuracion_dispositivos" Association="Self.FK_dispositivo_configuracion_dispositivos">
-            <End Role="dispositivo" EntitySet="dispositivo" />
-            <End Role="dispositivo_configuracion" EntitySet="dispositivo_configuracion" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dispositivo_historico_dispositivos" Association="Self.FK_dispositivo_historico_dispositivos">
-            <End Role="dispositivo" EntitySet="dispositivo" />
-            <End Role="dispositivo_historico" EntitySet="dispositivo_historico" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dispositivo_zonasegura_dispositivos" Association="Self.FK_dispositivo_zonasegura_dispositivos">
-            <End Role="dispositivo" EntitySet="dispositivo" />
-            <End Role="dispositivo_zonasegura" EntitySet="dispositivo_zonasegura" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dispositivo_zonawifi_dispositivos" Association="Self.FK_dispositivo_zonawifi_dispositivos">
-            <End Role="dispositivo" EntitySet="dispositivo" />
-            <End Role="dispositivo_zonawifi" EntitySet="dispositivo_zonawifi" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dispositivos_usuarios" Association="Self.FK_dispositivos_usuarios">
-            <End Role="usuario" EntitySet="usuario" />
-            <End Role="dispositivo" EntitySet="dispositivo" />
-          </AssociationSet>
-          <AssociationSet Name="FK_gps_dispositivos" Association="Self.FK_gps_dispositivos">
-            <End Role="dispositivo" EntitySet="dispositivo" />
-            <End Role="gps" EntitySet="gps" />
-          </AssociationSet>
-          <AssociationSet Name="FK_usuario_credenciales_usuarios" Association="Self.FK_usuario_credenciales_usuarios">
-            <End Role="usuario" EntitySet="usuario" />
-            <End Role="usuario_credenciales" EntitySet="usuario_credenciales" />
-          </AssociationSet>
           <FunctionImport Name="add_device_configuration">
             <Parameter Name="id_dispositivo" Mode="In" Type="Int32" />
             <Parameter Name="zona_wifi" Mode="In" Type="Boolean" />
@@ -546,24 +374,268 @@
             <Parameter Name="new_diagramname" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
+          <EntitySet Name="dispositivo" EntityType="SvaiotModel.dispositivo" />
+          <EntitySet Name="dispositivo_serial" EntityType="SvaiotModel.dispositivo_serial" />
+          <EntitySet Name="dispositivo_zonasegura" EntityType="SvaiotModel.dispositivo_zonasegura" />
+          <EntitySet Name="dispositivo_zonawifi" EntityType="SvaiotModel.dispositivo_zonawifi" />
+          <EntitySet Name="gps" EntityType="SvaiotModel.gps" />
+          <EntitySet Name="usuario" EntityType="SvaiotModel.usuario" />
+          <EntitySet Name="usuario_credenciales" EntityType="SvaiotModel.usuario_credenciales" />
+          <AssociationSet Name="FK_dispositivo_configuracion_dispositivos" Association="SvaiotModel.FK_dispositivo_configuracion_dispositivos">
+            <End Role="dispositivo" EntitySet="dispositivo" />
+            <End Role="dispositivo_configuracion" EntitySet="dispositivo_configuracion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dispositivo_dispositivo_serial" Association="SvaiotModel.FK_dispositivo_dispositivo_serial">
+            <End Role="dispositivo_serial" EntitySet="dispositivo_serial" />
+            <End Role="dispositivo" EntitySet="dispositivo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dispositivo_historico_dispositivos" Association="SvaiotModel.FK_dispositivo_historico_dispositivos">
+            <End Role="dispositivo" EntitySet="dispositivo" />
+            <End Role="dispositivo_historico" EntitySet="dispositivo_historico" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dispositivo_zonasegura_dispositivos" Association="SvaiotModel.FK_dispositivo_zonasegura_dispositivos">
+            <End Role="dispositivo" EntitySet="dispositivo" />
+            <End Role="dispositivo_zonasegura" EntitySet="dispositivo_zonasegura" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dispositivo_zonawifi_dispositivos" Association="SvaiotModel.FK_dispositivo_zonawifi_dispositivos">
+            <End Role="dispositivo" EntitySet="dispositivo" />
+            <End Role="dispositivo_zonawifi" EntitySet="dispositivo_zonawifi" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dispositivos_usuarios" Association="SvaiotModel.FK_dispositivos_usuarios">
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="dispositivo" EntitySet="dispositivo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_gps_dispositivos" Association="SvaiotModel.FK_gps_dispositivos">
+            <End Role="dispositivo" EntitySet="dispositivo" />
+            <End Role="gps" EntitySet="gps" />
+          </AssociationSet>
+          <AssociationSet Name="FK_usuario_credenciales_usuarios" Association="SvaiotModel.FK_usuario_credenciales_usuarios">
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="usuario_credenciales" EntitySet="usuario_credenciales" />
+          </AssociationSet>
+          <FunctionImport Name="sp_alterdiagram1">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram1">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram1">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition1">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams1">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram1">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams1" />
         </EntityContainer>
+        <EntityType Name="dispositivo">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_usuario" Type="Int32" Nullable="false" />
+          <Property Name="id_serial" Type="Int32" Nullable="false" />
+          <Property Name="nombre" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="placa" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="descripcion" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="dispositivo_configuracion" Relationship="SvaiotModel.FK_dispositivo_configuracion_dispositivos" FromRole="dispositivo" ToRole="dispositivo_configuracion" />
+          <NavigationProperty Name="dispositivo_serial" Relationship="SvaiotModel.FK_dispositivo_dispositivo_serial" FromRole="dispositivo" ToRole="dispositivo_serial" />
+          <NavigationProperty Name="dispositivo_historico" Relationship="SvaiotModel.FK_dispositivo_historico_dispositivos" FromRole="dispositivo" ToRole="dispositivo_historico" />
+          <NavigationProperty Name="dispositivo_zonasegura" Relationship="SvaiotModel.FK_dispositivo_zonasegura_dispositivos" FromRole="dispositivo" ToRole="dispositivo_zonasegura" />
+          <NavigationProperty Name="dispositivo_zonawifi" Relationship="SvaiotModel.FK_dispositivo_zonawifi_dispositivos" FromRole="dispositivo" ToRole="dispositivo_zonawifi" />
+          <NavigationProperty Name="usuario" Relationship="SvaiotModel.FK_dispositivos_usuarios" FromRole="dispositivo" ToRole="usuario" />
+          <NavigationProperty Name="gps" Relationship="SvaiotModel.FK_gps_dispositivos" FromRole="dispositivo" ToRole="gps" />
+        </EntityType>
+        <EntityType Name="dispositivo_serial">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="serial_device" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="tipo" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="dispositivo" Relationship="SvaiotModel.FK_dispositivo_dispositivo_serial" FromRole="dispositivo_serial" ToRole="dispositivo" />
+        </EntityType>
+        <EntityType Name="dispositivo_zonasegura">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_dispositivo" Type="Int32" Nullable="false" />
+          <Property Name="nombre" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="latitud" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="longitud" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="presicion" Type="Double" Nullable="false" />
+          <Property Name="rango" Type="Int32" Nullable="false" />
+          <Property Name="estado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="dispositivo" Relationship="SvaiotModel.FK_dispositivo_zonasegura_dispositivos" FromRole="dispositivo_zonasegura" ToRole="dispositivo" />
+        </EntityType>
+        <EntityType Name="dispositivo_zonawifi">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_dispositivo" Type="Int32" Nullable="false" />
+          <Property Name="nombre" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="es_fisico" Type="Boolean" Nullable="false" />
+          <Property Name="serial" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="estado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="dispositivo" Relationship="SvaiotModel.FK_dispositivo_zonawifi_dispositivos" FromRole="dispositivo_zonawifi" ToRole="dispositivo" />
+        </EntityType>
+        <EntityType Name="gps">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_dispositivo" Type="Int32" Nullable="false" />
+          <Property Name="latitud" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="longitud" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="prescicion" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="genera" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="dispositivo" Relationship="SvaiotModel.FK_gps_dispositivos" FromRole="gps" ToRole="dispositivo" />
+        </EntityType>
+        <EntityType Name="usuario">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="apellido" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="documento" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="telefono" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="correo" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="genera" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="activo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="dispositivo" Relationship="SvaiotModel.FK_dispositivos_usuarios" FromRole="usuario" ToRole="dispositivo" />
+          <NavigationProperty Name="usuario_credenciales" Relationship="SvaiotModel.FK_usuario_credenciales_usuarios" FromRole="usuario" ToRole="usuario_credenciales" />
+        </EntityType>
+        <EntityType Name="usuario_credenciales">
+          <Key>
+            <PropertyRef Name="id_usuario" />
+          </Key>
+          <Property Name="id_usuario" Type="Int32" Nullable="false" />
+          <Property Name="cryp_username" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="cryp_password" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="serial_dispositivo" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="usuario" Relationship="SvaiotModel.FK_usuario_credenciales_usuarios" FromRole="usuario_credenciales" ToRole="usuario" />
+        </EntityType>
+        <Association Name="FK_dispositivo_configuracion_dispositivos">
+          <End Type="SvaiotModel.dispositivo" Role="dispositivo" Multiplicity="1" />
+          <End Type="SvaiotModel.dispositivo_configuracion" Role="dispositivo_configuracion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="dispositivo">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="dispositivo_configuracion">
+              <PropertyRef Name="id_dispositivo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dispositivo_dispositivo_serial">
+          <End Type="SvaiotModel.dispositivo_serial" Role="dispositivo_serial" Multiplicity="1" />
+          <End Type="SvaiotModel.dispositivo" Role="dispositivo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="dispositivo_serial">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="dispositivo">
+              <PropertyRef Name="id_serial" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dispositivo_historico_dispositivos">
+          <End Type="SvaiotModel.dispositivo" Role="dispositivo" Multiplicity="1" />
+          <End Type="SvaiotModel.dispositivo_historico" Role="dispositivo_historico" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="dispositivo">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="dispositivo_historico">
+              <PropertyRef Name="id_dispositivo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dispositivo_zonasegura_dispositivos">
+          <End Type="SvaiotModel.dispositivo" Role="dispositivo" Multiplicity="1" />
+          <End Type="SvaiotModel.dispositivo_zonasegura" Role="dispositivo_zonasegura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="dispositivo">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="dispositivo_zonasegura">
+              <PropertyRef Name="id_dispositivo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dispositivo_zonawifi_dispositivos">
+          <End Type="SvaiotModel.dispositivo" Role="dispositivo" Multiplicity="1" />
+          <End Type="SvaiotModel.dispositivo_zonawifi" Role="dispositivo_zonawifi" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="dispositivo">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="dispositivo_zonawifi">
+              <PropertyRef Name="id_dispositivo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dispositivos_usuarios">
+          <End Type="SvaiotModel.usuario" Role="usuario" Multiplicity="1" />
+          <End Type="SvaiotModel.dispositivo" Role="dispositivo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="dispositivo">
+              <PropertyRef Name="id_usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_gps_dispositivos">
+          <End Type="SvaiotModel.dispositivo" Role="dispositivo" Multiplicity="1" />
+          <End Type="SvaiotModel.gps" Role="gps" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="dispositivo">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="gps">
+              <PropertyRef Name="id_dispositivo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_usuario_credenciales_usuarios">
+          <End Type="SvaiotModel.usuario" Role="usuario" Multiplicity="1" />
+          <End Type="SvaiotModel.usuario_credenciales" Role="usuario_credenciales" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="usuario_credenciales">
+              <PropertyRef Name="id_usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="SvaiotModelStoreContainer" CdmEntityContainer="SvaiotEntities">
-          <EntitySetMapping Name="dispositivo">
-            <EntityTypeMapping TypeName="SvaiotModel.dispositivo">
-              <MappingFragment StoreEntitySet="dispositivo">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
-                <ScalarProperty Name="nombre" ColumnName="nombre" />
-                <ScalarProperty Name="placa" ColumnName="placa" />
-                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="dispositivo_configuracion">
             <EntityTypeMapping TypeName="SvaiotModel.dispositivo_configuracion">
               <MappingFragment StoreEntitySet="dispositivo_configuracion">
@@ -590,44 +662,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="dispositivo_zonasegura">
-            <EntityTypeMapping TypeName="SvaiotModel.dispositivo_zonasegura">
-              <MappingFragment StoreEntitySet="dispositivo_zonasegura">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="id_dispositivo" ColumnName="id_dispositivo" />
-                <ScalarProperty Name="nombre" ColumnName="nombre" />
-                <ScalarProperty Name="latitud" ColumnName="latitud" />
-                <ScalarProperty Name="longitud" ColumnName="longitud" />
-                <ScalarProperty Name="presicion" ColumnName="presicion" />
-                <ScalarProperty Name="rango" ColumnName="rango" />
-                <ScalarProperty Name="estado" ColumnName="estado" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="dispositivo_zonawifi">
-            <EntityTypeMapping TypeName="SvaiotModel.dispositivo_zonawifi">
-              <MappingFragment StoreEntitySet="dispositivo_zonawifi">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="id_dispositivo" ColumnName="id_dispositivo" />
-                <ScalarProperty Name="nombre" ColumnName="nombre" />
-                <ScalarProperty Name="es_fisico" ColumnName="es_fisico" />
-                <ScalarProperty Name="serial" ColumnName="serial" />
-                <ScalarProperty Name="estado" ColumnName="estado" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="gps">
-            <EntityTypeMapping TypeName="SvaiotModel.gps">
-              <MappingFragment StoreEntitySet="gps">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="id_dispositivo" ColumnName="id_dispositivo" />
-                <ScalarProperty Name="latitud" ColumnName="latitud" />
-                <ScalarProperty Name="longitud" ColumnName="longitud" />
-                <ScalarProperty Name="prescicion" ColumnName="prescicion" />
-                <ScalarProperty Name="genera" ColumnName="genera" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="sysdiagrams">
             <EntityTypeMapping TypeName="SvaiotModel.sysdiagrams">
               <MappingFragment StoreEntitySet="sysdiagrams">
@@ -639,39 +673,98 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="add_device_configuration" FunctionName="SvaiotModel.Store.add_device_configuration" />
+          <EntitySetMapping Name="dispositivo">
+            <EntityTypeMapping TypeName="SvaiotModel.dispositivo">
+              <MappingFragment StoreEntitySet="dispositivo">
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="placa" ColumnName="placa" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="id_serial" ColumnName="id_serial" />
+                <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="dispositivo_serial">
+            <EntityTypeMapping TypeName="SvaiotModel.dispositivo_serial">
+              <MappingFragment StoreEntitySet="dispositivo_serial">
+                <ScalarProperty Name="tipo" ColumnName="tipo" />
+                <ScalarProperty Name="serial_device" ColumnName="serial_device" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="dispositivo_zonasegura">
+            <EntityTypeMapping TypeName="SvaiotModel.dispositivo_zonasegura">
+              <MappingFragment StoreEntitySet="dispositivo_zonasegura">
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="rango" ColumnName="rango" />
+                <ScalarProperty Name="presicion" ColumnName="presicion" />
+                <ScalarProperty Name="longitud" ColumnName="longitud" />
+                <ScalarProperty Name="latitud" ColumnName="latitud" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="id_dispositivo" ColumnName="id_dispositivo" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="dispositivo_zonawifi">
+            <EntityTypeMapping TypeName="SvaiotModel.dispositivo_zonawifi">
+              <MappingFragment StoreEntitySet="dispositivo_zonawifi">
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="serial" ColumnName="serial" />
+                <ScalarProperty Name="es_fisico" ColumnName="es_fisico" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="id_dispositivo" ColumnName="id_dispositivo" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="gps">
+            <EntityTypeMapping TypeName="SvaiotModel.gps">
+              <MappingFragment StoreEntitySet="gps">
+                <ScalarProperty Name="genera" ColumnName="genera" />
+                <ScalarProperty Name="prescicion" ColumnName="prescicion" />
+                <ScalarProperty Name="longitud" ColumnName="longitud" />
+                <ScalarProperty Name="latitud" ColumnName="latitud" />
+                <ScalarProperty Name="id_dispositivo" ColumnName="id_dispositivo" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="usuario">
             <EntityTypeMapping TypeName="SvaiotModel.usuario">
               <MappingFragment StoreEntitySet="usuario">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="nombre" ColumnName="nombre" />
-                <ScalarProperty Name="apellido" ColumnName="apellido" />
-                <ScalarProperty Name="documento" ColumnName="documento" />
-                <ScalarProperty Name="telefono" ColumnName="telefono" />
-                <ScalarProperty Name="correo" ColumnName="correo" />
-                <ScalarProperty Name="genera" ColumnName="genera" />
                 <ScalarProperty Name="activo" ColumnName="activo" />
+                <ScalarProperty Name="genera" ColumnName="genera" />
+                <ScalarProperty Name="correo" ColumnName="correo" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+                <ScalarProperty Name="documento" ColumnName="documento" />
+                <ScalarProperty Name="apellido" ColumnName="apellido" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="usuario_credenciales">
             <EntityTypeMapping TypeName="SvaiotModel.usuario_credenciales">
               <MappingFragment StoreEntitySet="usuario_credenciales">
-                <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
-                <ScalarProperty Name="cryp_username" ColumnName="cryp_username" />
-                <ScalarProperty Name="cryp_password" ColumnName="cryp_password" />
                 <ScalarProperty Name="serial_dispositivo" ColumnName="serial_dispositivo" />
+                <ScalarProperty Name="cryp_password" ColumnName="cryp_password" />
+                <ScalarProperty Name="cryp_username" ColumnName="cryp_username" />
+                <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="add_device_configuration" FunctionName="SvaiotModel.Store.add_device_configuration" />
-          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="SvaiotModel.Store.sp_alterdiagram" />
-          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="SvaiotModel.Store.sp_creatediagram" />
-          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="SvaiotModel.Store.sp_dropdiagram" />
-          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="SvaiotModel.Store.sp_helpdiagramdefinition" />
-          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="SvaiotModel.Store.sp_helpdiagrams" />
-          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="SvaiotModel.Store.sp_renamediagram" />
-          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="SvaiotModel.Store.sp_upgraddiagrams" />
-        </EntityContainerMapping>
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram1" FunctionName="SvaiotModel.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram1" FunctionName="SvaiotModel.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram1" FunctionName="SvaiotModel.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition1" FunctionName="SvaiotModel.Store.sp_helpdiagramdefinition" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams1" FunctionName="SvaiotModel.Store.sp_helpdiagrams" />
+          <FunctionImportMapping FunctionImportName="sp_renamediagram1" FunctionName="SvaiotModel.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams1" FunctionName="SvaiotModel.Store.sp_upgraddiagrams" />
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

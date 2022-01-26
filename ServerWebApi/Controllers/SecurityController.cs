@@ -1,4 +1,5 @@
-﻿using ServerWebApi.Models.request;
+﻿using ServerWebApi.Models.helper;
+using ServerWebApi.Models.request;
 using ServerWebApi.Models.response;
 using ServerWebApi.Models.services;
 using System;
@@ -17,6 +18,7 @@ namespace ServerWebApi.Controllers
     public class SecurityController : ApiController
     {
         private readonly AccountService _api = new AccountService();
+
 
         [HttpPost]
         [Route("authenticate")]
@@ -37,5 +39,23 @@ namespace ServerWebApi.Controllers
             }
         }
 
+        // Get: api/security/device/{codigo}
+        [HttpGet]
+        [Route("device/{codigo}")]
+        public IHttpActionResult PostConfiguracion(string codigo)
+        {
+            var serial = CryptoHelper.Decode(codigo);
+            var deviceAuth = _api.GetUserBySerialDevice(serial);
+            if (deviceAuth != null)
+            {
+                var token = SecurityService.GenerateTokenJwt(deviceAuth.User);
+                token.Code = deviceAuth.Code;
+                return Ok(token);
+            }
+            else
+            {
+                return Unauthorized();
+            }
+        }
     }
 }

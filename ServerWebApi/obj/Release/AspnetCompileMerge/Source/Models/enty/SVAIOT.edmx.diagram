@@ -5,22 +5,24 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="e92756b3aefe46a792023b8fe983d0b6" Name="Diagram1">
-        <EntityTypeShape EntityType="SvaiotModel.dispositivo" Width="1.5" PointX="3" PointY="8" IsExpanded="true" />
         <EntityTypeShape EntityType="SvaiotModel.dispositivo_configuracion" Width="1.5" PointX="5.25" PointY="1.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SvaiotModel.dispositivo_historico" Width="1.5" PointX="5.25" PointY="5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SvaiotModel.dispositivo_zonasegura" Width="1.5" PointX="5.25" PointY="8.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="SvaiotModel.dispositivo_zonawifi" Width="1.5" PointX="5.25" PointY="11.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="SvaiotModel.gps" Width="1.5" PointX="5.25" PointY="15" IsExpanded="true" />
         <EntityTypeShape EntityType="SvaiotModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SvaiotModel.usuario" Width="1.5" PointX="0.75" PointY="9.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="SvaiotModel.usuario_credenciales" Width="1.5" PointX="3" PointY="18.125" IsExpanded="true" />
-        <AssociationConnector Association="SvaiotModel.FK_dispositivo_configuracion_dispositivos" ManuallyRouted="false" />
-        <AssociationConnector Association="SvaiotModel.FK_dispositivo_historico_dispositivos" ManuallyRouted="false" />
-        <AssociationConnector Association="SvaiotModel.FK_dispositivo_zonasegura_dispositivos" ManuallyRouted="false" />
-        <AssociationConnector Association="SvaiotModel.FK_dispositivo_zonawifi_dispositivos" ManuallyRouted="false" />
-        <AssociationConnector Association="SvaiotModel.FK_dispositivos_usuarios" ManuallyRouted="false" />
-        <AssociationConnector Association="SvaiotModel.FK_gps_dispositivos" ManuallyRouted="false" />
-        <AssociationConnector Association="SvaiotModel.FK_usuario_credenciales_usuarios" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="SvaiotModel.dispositivo" Width="1.5" PointX="6" PointY="2.875" />
+        <EntityTypeShape EntityType="SvaiotModel.dispositivo_serial" Width="1.5" PointX="3.75" PointY="7.5" />
+        <EntityTypeShape EntityType="SvaiotModel.dispositivo_zonasegura" Width="1.5" PointX="8.25" PointY="12.125" />
+        <EntityTypeShape EntityType="SvaiotModel.dispositivo_zonawifi" Width="1.5" PointX="8.25" PointY="9" />
+        <EntityTypeShape EntityType="SvaiotModel.gps" Width="1.5" PointX="8.25" PointY="15.625" />
+        <EntityTypeShape EntityType="SvaiotModel.usuario" Width="1.5" PointX="0.75" PointY="3.125" />
+        <EntityTypeShape EntityType="SvaiotModel.usuario_credenciales" Width="1.5" PointX="3" PointY="3.625" />
+        <AssociationConnector Association="SvaiotModel.FK_dispositivo_configuracion_dispositivos" />
+        <AssociationConnector Association="SvaiotModel.FK_dispositivo_dispositivo_serial" />
+        <AssociationConnector Association="SvaiotModel.FK_dispositivo_historico_dispositivos" />
+        <AssociationConnector Association="SvaiotModel.FK_dispositivo_zonasegura_dispositivos" />
+        <AssociationConnector Association="SvaiotModel.FK_dispositivo_zonawifi_dispositivos" />
+        <AssociationConnector Association="SvaiotModel.FK_dispositivos_usuarios" />
+        <AssociationConnector Association="SvaiotModel.FK_gps_dispositivos" />
+        <AssociationConnector Association="SvaiotModel.FK_usuario_credenciales_usuarios" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
