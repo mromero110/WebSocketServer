@@ -11,6 +11,18 @@
     <Property Name="placa" Type="varchar" MaxLength="100" Nullable="false" />
     <Property Name="descripcion" Type="varchar" MaxLength="100" Nullable="false" />
   </EntityType>
+  <EntityType Name="dispositivo_acciones">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="id_dispositivo" Type="int" Nullable="false" />
+    <Property Name="estado" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="latitud" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="longitud" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="zona" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="genera" Type="datetime2" Precision="0" Nullable="false" />
+  </EntityType>
   <EntityType Name="dispositivo_configuracion">
     <Key>
       <PropertyRef Name="id" />
@@ -78,13 +90,15 @@
     <Property Name="prescicion" Type="varchar" MaxLength="100" Nullable="false" />
     <Property Name="genera" Type="datetime2" Precision="0" Nullable="false" />
   </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'db_a8203a_isvaiot.dbo.sysdiagrams' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="sysdiagrams">
     <Key>
       <PropertyRef Name="diagram_id" />
     </Key>
     <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
     <Property Name="principal_id" Type="int" Nullable="false" />
-    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="diagram_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
     <Property Name="version" Type="int" />
     <Property Name="definition" Type="varbinary(max)" />
   </EntityType>
@@ -110,6 +124,18 @@
     <Property Name="cryp_password" Type="varchar" MaxLength="300" Nullable="false" />
     <Property Name="serial_dispositivo" Type="varchar" MaxLength="300" Nullable="false" />
   </EntityType>
+  <Association Name="FK_dispositivo_acciones_dispositivo">
+    <End Role="dispositivo" Type="Self.dispositivo" Multiplicity="1" />
+    <End Role="dispositivo_acciones" Type="Self.dispositivo_acciones" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="dispositivo">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="dispositivo_acciones">
+        <PropertyRef Name="id_dispositivo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_dispositivo_configuracion_dispositivos">
     <End Role="dispositivo" Type="Self.dispositivo" Multiplicity="1" />
     <End Role="dispositivo_configuracion" Type="Self.dispositivo_configuracion" Multiplicity="*" />
@@ -213,48 +239,35 @@
     <Parameter Name="alarma" Type="bit" Mode="In" />
     <Parameter Name="camara" Type="bit" Mode="In" />
   </Function>
-  <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
-  <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-    <Parameter Name="owner_id" Type="int" Mode="In" />
-    <Parameter Name="version" Type="int" Mode="In" />
-    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  <Function Name="validate_securezone" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="custLat" Type="float" Mode="In" />
+    <Parameter Name="custLng" Type="float" Mode="In" />
+    <Parameter Name="dispositivo" Type="int" Mode="In" />
   </Function>
-  <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-    <Parameter Name="owner_id" Type="int" Mode="In" />
-    <Parameter Name="version" Type="int" Mode="In" />
-    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
-  </Function>
-  <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-    <Parameter Name="owner_id" Type="int" Mode="In" />
-  </Function>
-  <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-    <Parameter Name="owner_id" Type="int" Mode="In" />
-  </Function>
-  <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-    <Parameter Name="owner_id" Type="int" Mode="In" />
-  </Function>
-  <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-    <Parameter Name="owner_id" Type="int" Mode="In" />
-    <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
-  </Function>
-  <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <EntityContainer Name="SvaiotModelStoreContainer">
     <EntitySet Name="dispositivo" EntityType="Self.dispositivo" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="dispositivo_acciones" EntityType="Self.dispositivo_acciones" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="dispositivo_configuracion" EntityType="Self.dispositivo_configuracion" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="dispositivo_historico" EntityType="Self.dispositivo_historico" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="dispositivo_serial" EntityType="Self.dispositivo_serial" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="dispositivo_zonasegura" EntityType="Self.dispositivo_zonasegura" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="dispositivo_zonawifi" EntityType="Self.dispositivo_zonawifi" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="gps" EntityType="Self.gps" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="usuario" EntityType="Self.usuario" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="usuario_credenciales" EntityType="Self.usuario_credenciales" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [sysdiagrams].[name] AS [name], 
+    [sysdiagrams].[principal_id] AS [principal_id], 
+    [sysdiagrams].[diagram_id] AS [diagram_id], 
+    [sysdiagrams].[version] AS [version], 
+    [sysdiagrams].[definition] AS [definition]
+    FROM [dbo].[sysdiagrams] AS [sysdiagrams]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_dispositivo_acciones_dispositivo" Association="Self.FK_dispositivo_acciones_dispositivo">
+      <End Role="dispositivo" EntitySet="dispositivo" />
+      <End Role="dispositivo_acciones" EntitySet="dispositivo_acciones" />
+    </AssociationSet>
     <AssociationSet Name="FK_dispositivo_configuracion_dispositivos" Association="Self.FK_dispositivo_configuracion_dispositivos">
       <End Role="dispositivo" EntitySet="dispositivo" />
       <End Role="dispositivo_configuracion" EntitySet="dispositivo_configuracion" />

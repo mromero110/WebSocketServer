@@ -5,7 +5,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <_PublishTargetUrl>C:\Users\rperez\Desktop\publish</_PublishTargetUrl>
-    <History>True|2022-01-25T06:47:20.0397519Z;True|2022-01-25T00:14:16.5171439-05:00;True|2022-01-25T00:13:19.7653202-05:00;</History>
+    <History>True|2022-01-28T04:10:53.6905824Z;True|2022-01-27T23:09:48.8810890-05:00;True|2022-01-27T01:01:31.9964543-05:00;True|2022-01-26T23:40:37.1099961-05:00;True|2022-01-26T03:32:02.4433247-05:00;True|2022-01-25T01:47:20.0397519-05:00;True|2022-01-25T00:14:16.5171439-05:00;True|2022-01-25T00:13:19.7653202-05:00;</History>
   </PropertyGroup>
   <ItemGroup>
     <File Include="Areas/HelpPage/HelpPage.css">
@@ -78,10 +78,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>09/10/2013 16:29:20</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>01/25/2022 01:47:18</publishTime>
+      <publishTime>01/27/2022 23:10:53</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>01/25/2022 01:47:18</publishTime>
+      <publishTime>01/27/2022 23:10:53</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>03/02/2015 04:32:26</publishTime>
@@ -255,10 +255,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>08/08/2018 12:18:16</publishTime>
     </File>
     <File Include="bin/ServerWebApi.dll">
-      <publishTime>01/25/2022 01:47:12</publishTime>
+      <publishTime>01/27/2022 23:09:40</publishTime>
     </File>
     <File Include="bin/ServerWebApi.pdb">
-      <publishTime>01/25/2022 01:47:12</publishTime>
+      <publishTime>01/27/2022 23:09:40</publishTime>
     </File>
     <File Include="bin/System.IdentityModel.Tokens.Jwt.dll">
       <publishTime>01/19/2022 17:26:24</publishTime>
@@ -342,10 +342,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>01/24/2022 18:10:06</publishTime>
     </File>
     <File Include="Models/enty/SVAIOT.edmx.diagram">
-      <publishTime>01/25/2022 00:49:42</publishTime>
+      <publishTime>01/26/2022 03:06:13</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>01/25/2022 01:47:13</publishTime>
+      <publishTime>01/27/2022 23:10:49</publishTime>
     </File>
     <File Include="Scripts/bootstrap.js">
       <publishTime>01/24/2022 18:10:06</publishTime>

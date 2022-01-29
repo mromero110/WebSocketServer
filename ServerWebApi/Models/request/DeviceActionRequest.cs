@@ -5,11 +5,11 @@ using System.Web;
 
 namespace ServerWebApi.Models.request
 {
-    public class GpsRequest 
+    public class DeviceActionRequest 
     {
-        public int IdDispositivo { get; set; }
+        public string Estado { get; set; }
         public string Latitud { get; set; }
         public string Longitud { get; set; }
-        public string Prescicion { get; set; }
+        public string Zona { get; set; }
     }
 }

@@ -22,6 +22,7 @@ namespace ServerWebApi.Models.enty
             this.dispositivo_zonasegura = new HashSet<dispositivo_zonasegura>();
             this.dispositivo_zonawifi = new HashSet<dispositivo_zonawifi>();
             this.gps = new HashSet<gps>();
+            this.dispositivo_acciones = new HashSet<dispositivo_acciones>();
         }
     
         public int id { get; set; }
@@ -43,5 +44,7 @@ namespace ServerWebApi.Models.enty
         public virtual usuario usuario { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<gps> gps { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<dispositivo_acciones> dispositivo_acciones { get; set; }
     }
 }

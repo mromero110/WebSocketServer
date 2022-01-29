@@ -186,6 +186,9 @@
     <Compile Include="Models\enty\dispositivo.cs">
       <DependentUpon>SVAIOT.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\enty\dispositivo_acciones.cs">
+      <DependentUpon>SVAIOT.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\enty\dispositivo_configuracion.cs">
       <DependentUpon>SVAIOT.tt</DependentUpon>
     </Compile>
@@ -228,13 +231,20 @@
     <Compile Include="Models\enty\usuario_credenciales.cs">
       <DependentUpon>SVAIOT.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\enty\validate_securezone_Result.cs">
+      <DependentUpon>SVAIOT.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\handler\TokenValidationHandler.cs" />
     <Compile Include="Models\helper\CryptoHelper.cs" />
     <Compile Include="Models\request\ConfigRequest.cs" />
     <Compile Include="Models\request\CredentialRequest.cs" />
+    <Compile Include="Models\request\DeviceActionRequest.cs" />
     <Compile Include="Models\request\DeviceRequest.cs" />
+    <Compile Include="Models\request\LatLangRequest.cs" />
     <Compile Include="Models\request\SecureZoneRequest.cs" />
     <Compile Include="Models\request\WifiZoneRequest.cs" />
+    <Compile Include="Models\response\DeviceActionResponse.cs" />
+    <Compile Include="Models\response\DeviceResponse.cs" />
     <Compile Include="Models\response\DeviceUserResponse.cs" />
     <Compile Include="Models\response\GpsResponse.cs" />
     <Compile Include="Models\request\GpsRequest.cs" />

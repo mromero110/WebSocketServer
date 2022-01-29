@@ -37,6 +37,7 @@ namespace ServerWebApi.Models.enty
         public virtual DbSet<gps> gps { get; set; }
         public virtual DbSet<usuario> usuario { get; set; }
         public virtual DbSet<usuario_credenciales> usuario_credenciales { get; set; }
+        public virtual DbSet<dispositivo_acciones> dispositivo_acciones { get; set; }
     
         public virtual int add_device_configuration(Nullable<int> id_dispositivo, Nullable<bool> zona_wifi, Nullable<bool> apagado_emergencia, Nullable<bool> alarma, Nullable<bool> camara)
         {
@@ -267,6 +268,23 @@ namespace ServerWebApi.Models.enty
         public virtual int sp_upgraddiagrams1()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_upgraddiagrams1");
+        }
+    
+        public virtual ObjectResult<validate_securezone_Result> validate_securezone(Nullable<double> custLat, Nullable<double> custLng, Nullable<int> dispositivo)
+        {
+            var custLatParameter = custLat.HasValue ?
+                new ObjectParameter("custLat", custLat) :
+                new ObjectParameter("custLat", typeof(double));
+    
+            var custLngParameter = custLng.HasValue ?
+                new ObjectParameter("custLng", custLng) :
+                new ObjectParameter("custLng", typeof(double));
+    
+            var dispositivoParameter = dispositivo.HasValue ?
+                new ObjectParameter("dispositivo", dispositivo) :
+                new ObjectParameter("dispositivo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<validate_securezone_Result>("validate_securezone", custLatParameter, custLngParameter, dispositivoParameter);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace ServerWebApi.Models.request
 {
     public class DeviceRequest
     {
-        public int idSerial { get; set; }
+        public string Serial { get; set; }
         public string Nombre { get; set; }
         public string Placa { get; set; }
         public string Descripcion { get; set; }

@@ -7,6 +7,7 @@ namespace ServerWebApi.Models.request
 {
     public class ConfigRequest
     {
+        public string TelefonoEmergencia { get; set; }
         public bool ZonaWifi { get; set; }
         public bool ApagadoEmergencia { get; set; }
         public bool Alarma { get; set; }

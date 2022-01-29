@@ -17,20 +17,12 @@ namespace ServerWebApi.Controllers
     {
         private readonly GpsService _api = new GpsService();
 
-        // GET: api/gps/5
+        // GET: api/gps/5/history
         [HttpGet]
         [Route("{dispositivo}")]
-        public MessageResponse Get(int dispositivo)
+        public List<GpsResponse> Get(int dispositivo)
         {
-            try
-            {
-                var result = _api.GetHistory(dispositivo);
-                return MessageResponse.Ok();
-            }
-            catch (Exception ex)
-            {
-                return MessageResponse.Bad(ex.Message);
-            }
+            return _api.GetHistory(dispositivo);
         }
 
         // POST: api/gps
@@ -47,6 +39,13 @@ namespace ServerWebApi.Controllers
             {
                 return MessageResponse.Bad(ex.Message);
             }
+        }
+
+        // POST: api/gps
+        [HttpGet]
+        [Route("zonasegura/{dispositivo}")]
+        public MessageResponse ValidarZonaSegura([FromBody] LatLangRequest posicion, int dispositivo) {
+            return _api.ValidarZonaSegura(dispositivo, posicion);
         }
     }
 }

@@ -27,10 +27,38 @@ namespace ServerWebApi.Controllers
                 _api.PostDevice(device, AuthUser.Id);
                 return MessageResponse.Ok();
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 return MessageResponse.Bad(ex.Message);
             }
+        }
+
+        [HttpGet]
+        [Route("list")]
+        public List<DeviceResponse> GetDeviceList()
+        {
+            return _api.GetDevices(AuthUser.Id);
+        }
+
+        [HttpGet]
+        [Route("{device}/actions/today")]
+        public List<DeviceActionResponse> GeDeviceActions(int device)
+        {
+            return _api.GetDeviceActions(AuthUser.Id, device);
+        }
+
+        [HttpGet]
+        [Route("{device}/actions/history")]
+        public List<DeviceActionResponse> GeDeviceActionsHistory(int device)
+        {
+            return _api.GetDeviceActionsHistory(AuthUser.Id, device);
+        }
+
+        [HttpPost]
+        [Route("{device}/actions/{from}")]
+        public MessageResponse PostDeviceActions(int device, string from, [FromBody] DeviceActionRequest action)
+        {
+            return _api.PostDeviceAction(AuthUser.Id, device, from, action);
         }
 
         // PUT: api/dipositivo/5/configuracion
@@ -48,7 +76,6 @@ namespace ServerWebApi.Controllers
                 return MessageResponse.Bad(ex.Message);
             }
         }
-
 
         // Get: api/dipositivo/8
         [HttpGet]

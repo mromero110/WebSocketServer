@@ -122,12 +122,26 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <FunctionImportMapping FunctionImportName="sp_alterdiagram1" FunctionName="SvaiotModel.Store.sp_alterdiagram" />
-    <FunctionImportMapping FunctionImportName="sp_creatediagram1" FunctionName="SvaiotModel.Store.sp_creatediagram" />
-    <FunctionImportMapping FunctionImportName="sp_dropdiagram1" FunctionName="SvaiotModel.Store.sp_dropdiagram" />
-    <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition1" FunctionName="SvaiotModel.Store.sp_helpdiagramdefinition" />
-    <FunctionImportMapping FunctionImportName="sp_helpdiagrams1" FunctionName="SvaiotModel.Store.sp_helpdiagrams" />
-    <FunctionImportMapping FunctionImportName="sp_renamediagram1" FunctionName="SvaiotModel.Store.sp_renamediagram" />
-    <FunctionImportMapping FunctionImportName="sp_upgraddiagrams1" FunctionName="SvaiotModel.Store.sp_upgraddiagrams" />
+    <EntitySetMapping Name="dispositivo_acciones">
+      <EntityTypeMapping TypeName="SvaiotModel.dispositivo_acciones">
+        <MappingFragment StoreEntitySet="dispositivo_acciones">
+          <ScalarProperty Name="genera" ColumnName="genera" />
+          <ScalarProperty Name="zona" ColumnName="zona" />
+          <ScalarProperty Name="longitud" ColumnName="longitud" />
+          <ScalarProperty Name="latitud" ColumnName="latitud" />
+          <ScalarProperty Name="estado" ColumnName="estado" />
+          <ScalarProperty Name="id_dispositivo" ColumnName="id_dispositivo" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="validate_securezone" FunctionName="SvaiotModel.Store.validate_securezone">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="SvaiotModel.validate_securezone_Result">
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="distance" ColumnName="distance" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
   </EntityContainerMapping>
 </Mapping>

@@ -146,6 +146,16 @@
       <Parameter Name="new_diagramname" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="sp_upgraddiagrams1" />
+    <EntitySet Name="dispositivo_acciones" EntityType="SvaiotModel.dispositivo_acciones" />
+    <AssociationSet Name="FK_dispositivo_acciones_dispositivo" Association="SvaiotModel.FK_dispositivo_acciones_dispositivo">
+      <End Role="dispositivo" EntitySet="dispositivo" />
+      <End Role="dispositivo_acciones" EntitySet="dispositivo_acciones" />
+    </AssociationSet>
+    <FunctionImport Name="validate_securezone" ReturnType="Collection(SvaiotModel.validate_securezone_Result)">
+      <Parameter Name="custLat" Mode="In" Type="Double" />
+      <Parameter Name="custLng" Mode="In" Type="Double" />
+      <Parameter Name="dispositivo" Mode="In" Type="Int32" />
+    </FunctionImport>
   </EntityContainer>
   <EntityType Name="dispositivo">
     <Key>
@@ -164,6 +174,7 @@
     <NavigationProperty Name="dispositivo_zonawifi" Relationship="SvaiotModel.FK_dispositivo_zonawifi_dispositivos" FromRole="dispositivo" ToRole="dispositivo_zonawifi" />
     <NavigationProperty Name="usuario" Relationship="SvaiotModel.FK_dispositivos_usuarios" FromRole="dispositivo" ToRole="usuario" />
     <NavigationProperty Name="gps" Relationship="SvaiotModel.FK_gps_dispositivos" FromRole="dispositivo" ToRole="gps" />
+    <NavigationProperty Name="dispositivo_acciones" Relationship="SvaiotModel.FK_dispositivo_acciones_dispositivo" FromRole="dispositivo" ToRole="dispositivo_acciones" />
   </EntityType>
   <EntityType Name="dispositivo_serial">
     <Key>
@@ -333,4 +344,33 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <EntityType Name="dispositivo_acciones">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="id_dispositivo" Type="Int32" Nullable="false" />
+    <Property Name="estado" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="latitud" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="longitud" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="zona" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="genera" Type="DateTime" Nullable="false" Precision="0" />
+    <NavigationProperty Name="dispositivo" Relationship="SvaiotModel.FK_dispositivo_acciones_dispositivo" FromRole="dispositivo_acciones" ToRole="dispositivo" />
+  </EntityType>
+  <Association Name="FK_dispositivo_acciones_dispositivo">
+    <End Type="SvaiotModel.dispositivo" Role="dispositivo" Multiplicity="1" />
+    <End Type="SvaiotModel.dispositivo_acciones" Role="dispositivo_acciones" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="dispositivo">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="dispositivo_acciones">
+        <PropertyRef Name="id_dispositivo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <ComplexType Name="validate_securezone_Result">
+    <Property Type="String" Name="nombre" Nullable="false" MaxLength="100" />
+    <Property Type="Double" Name="distance" Nullable="true" />
+  </ComplexType>
 </Schema>

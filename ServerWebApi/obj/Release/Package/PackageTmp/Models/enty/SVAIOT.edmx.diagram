@@ -8,7 +8,7 @@
         <EntityTypeShape EntityType="SvaiotModel.dispositivo_configuracion" Width="1.5" PointX="5.25" PointY="1.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SvaiotModel.dispositivo_historico" Width="1.5" PointX="5.25" PointY="5" IsExpanded="true" />
         <EntityTypeShape EntityType="SvaiotModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SvaiotModel.dispositivo" Width="1.5" PointX="6" PointY="2.875" />
+        <EntityTypeShape EntityType="SvaiotModel.dispositivo" Width="1.5" PointX="7.625" PointY="1.5" />
         <EntityTypeShape EntityType="SvaiotModel.dispositivo_serial" Width="1.5" PointX="3.75" PointY="7.5" />
         <EntityTypeShape EntityType="SvaiotModel.dispositivo_zonasegura" Width="1.5" PointX="8.25" PointY="12.125" />
         <EntityTypeShape EntityType="SvaiotModel.dispositivo_zonawifi" Width="1.5" PointX="8.25" PointY="9" />
@@ -23,6 +23,8 @@
         <AssociationConnector Association="SvaiotModel.FK_dispositivos_usuarios" />
         <AssociationConnector Association="SvaiotModel.FK_gps_dispositivos" />
         <AssociationConnector Association="SvaiotModel.FK_usuario_credenciales_usuarios" />
+        <EntityTypeShape EntityType="SvaiotModel.dispositivo_acciones" Width="1.5" PointX="9.875" PointY="2.125" />
+        <AssociationConnector Association="SvaiotModel.FK_dispositivo_acciones_dispositivo" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

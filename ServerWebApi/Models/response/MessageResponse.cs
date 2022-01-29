@@ -10,12 +10,12 @@ namespace ServerWebApi.Models.response
         public string Message { get; set; }
         public bool Status { get; set; }
 
-        public static MessageResponse Ok()
+        public static MessageResponse Ok(string message = "")
         {
             return new MessageResponse
             {
                 Status = true,
-                Message = ""
+                Message = message
             };
         }
 

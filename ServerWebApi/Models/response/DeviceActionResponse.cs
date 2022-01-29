@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace ServerWebApi.Models
+namespace ServerWebApi.Models.response
 {
-    public class GpsResponse : GpsRequest
+    public class DeviceActionResponse : DeviceActionRequest
     {
-        public long Id { get; set; }
         public DateTime Genera { get; set; }
+
     }
 }
